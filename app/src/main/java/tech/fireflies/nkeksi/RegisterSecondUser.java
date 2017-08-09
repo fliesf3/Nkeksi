@@ -53,9 +53,9 @@ public class RegisterSecondUser extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("UserInfo");
 
-        firstName = (EditText) findViewById(R.id.first_name_register);
-        lastName = (EditText) findViewById(R.id.last_name_register);
-        phoneText = (EditText) findViewById(R.id.phone_number_register);
+        firstName = (EditText) findViewById(R.id.admin_first_name_register);
+        lastName = (EditText) findViewById(R.id.admin_last_name_register);
+        phoneText = (EditText) findViewById(R.id.resto_phone_number_register);
         nextButton = (ImageButton) findViewById(R.id.nextButton);
     }
     public void SecondRegistration(View v){
