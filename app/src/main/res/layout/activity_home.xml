@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="tech.fireflies.nkeksi.Home">
+
+    <include
+        android:id="@+id/tool"
+        layout="@layout/toolbar" />
+
+    <android.support.v7.widget.SearchView
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tool"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:background="#c0c0c0"
+        android:elevation="20dp"
+        android:queryHint="Search Restaurants" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_bar">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <com.synnapps.carouselview.CarouselView
+                android:id="@+id/slide_me"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+
+                app:animateOnBoundary="true"
+                app:autoPlay="true"
+                app:fillColor="@color/colorPrimary"
+                app:indicatorGravity="center_horizontal|top"
+                app:indicatorVisibility="visible"
+                app:slideInterval="5000" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/food_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/slide_me" />
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
