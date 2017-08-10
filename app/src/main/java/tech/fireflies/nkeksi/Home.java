@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
@@ -26,6 +27,7 @@ public class Home extends AppCompatActivity {
     int[] images = {R.drawable.burger1,R.drawable.burger2,R.drawable.chick2
             ,R.drawable.chick3,R.drawable.chick4,R.drawable.food,R.drawable.food1,R.drawable.food2,R.drawable.foodie,
             R.drawable.meat,R.drawable.meat2,R.drawable.meat3,R.drawable.meat4};
+    MaterialSearchView materialSearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,8 @@ public class Home extends AppCompatActivity {
 
         carouselView = (CarouselView) findViewById(R.id.slide_me);
         foodList = (RecyclerView) findViewById(R.id.food_list);
+
+        materialSearchView = (MaterialSearchView) findViewById(R.id.search_bar);
 
         carouselView.setPageCount(images.length);
         carouselView.setImageListener(new ImageListener() {
@@ -95,6 +99,8 @@ public class Home extends AppCompatActivity {
         public boolean onCreateOptionsMenu(Menu menu) {
             // Inflate the menu; this adds items to the action bar if it is present.
             getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        materialSearchView.setMenuItem(item);
             return true;
         }
 
@@ -110,8 +116,20 @@ public class Home extends AppCompatActivity {
                 finish();
                 startActivity(new Intent(this,UserOrResto.class));
             }
+            if(id==R.id.search){
+                startActivity(new Intent(this,TestSearch.class));
+            }
 
             return super.onOptionsItemSelected(item);
         }
+
+    @Override
+    public void onBackPressed() {
+        if (materialSearchView.isSearchOpen()) {
+            materialSearchView.closeSearch();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
 }

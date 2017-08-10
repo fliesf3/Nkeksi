@@ -22,8 +22,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.HashMap;
 
@@ -36,9 +34,6 @@ public class RegisterSecondResto extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     DatabaseReference writeLocation;
-    Query query;
-    DatabaseReference queryLocation;
-    MaterialSearchView materialSearchView;
 
 
     ProgressDialog progressDialog;
@@ -66,32 +61,9 @@ public class RegisterSecondResto extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("unVerified");
         writeLocation = firebaseDatabase.getReference().child("locations");
-        queryLocation = writeLocation;
 
-        materialSearchView = (MaterialSearchView) findViewById(R.id.search_bar);
-        materialSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
 
-            }
 
-            @Override
-            public void onSearchViewClosed() {
-
-            }
-        });
-        materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                query = firebaseDatabase.getReference().orderByChild("Buea").startAt(newText);
-                return false;
-            }
-        });
         locationSpinner = (Spinner) findViewById(R.id.resto_location_register);
         locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
