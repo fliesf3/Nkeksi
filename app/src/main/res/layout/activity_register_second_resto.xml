@@ -29,11 +29,11 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/round_edittext"
-                android:drawableLeft="@drawable/ic_location"
+                android:drawableLeft="@drawable/ic_short_text"
                 android:drawablePadding="14dp"
                 android:hint="Restaurant Name"
                 android:imeOptions="actionNext"
-                android:inputType="phone"
+                android:inputType="text"
                 android:padding="15dp"
                 android:textColorHint="@color/colorPrimary" />
 
@@ -110,7 +110,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/round_edittext"
                 android:imeOptions="actionNext"
-                android:padding="20dp" />
+                android:padding="10dp" />
 
             <EditText
                 android:id="@+id/resto_address_register"
@@ -125,7 +125,7 @@
                 android:drawablePadding="14dp"
                 android:hint="Address"
                 android:imeOptions="actionGo"
-                android:inputType="phone"
+                android:inputType="textCapWords"
                 android:padding="15dp"
                 android:textColorHint="@color/colorPrimary" />
         </LinearLayout>

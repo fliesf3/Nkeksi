@@ -10,18 +10,12 @@
         android:id="@+id/tool"
         layout="@layout/toolbar" />
 
-    <android.support.v7.widget.SearchView
+    <com.miguelcatalan.materialsearchview.MaterialSearchView
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tool"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:background="#c0c0c0"
-        android:elevation="20dp"
-        android:queryHint="Search Restaurants" />
+        app:searchBackground="@color/colorPrimary"
+        android:textColorHint="#fff" />
 
     <ScrollView
         android:layout_width="wrap_content"

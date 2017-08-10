@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.HashMap;
 
@@ -33,6 +35,11 @@ public class RegisterSecondResto extends AppCompatActivity {
     ImageButton nextButton;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    DatabaseReference writeLocation;
+    Query query;
+    DatabaseReference queryLocation;
+    MaterialSearchView materialSearchView;
+
 
     ProgressDialog progressDialog;
     String[] location = {"Buea", "Douala", "Yaounde", "Limbe"};
@@ -58,7 +65,33 @@ public class RegisterSecondResto extends AppCompatActivity {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("unVerified");
+        writeLocation = firebaseDatabase.getReference().child("locations");
+        queryLocation = writeLocation;
 
+        materialSearchView = (MaterialSearchView) findViewById(R.id.search_bar);
+        materialSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+
+            }
+        });
+        materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                query = firebaseDatabase.getReference().orderByChild("Buea").startAt(newText);
+                return false;
+            }
+        });
         locationSpinner = (Spinner) findViewById(R.id.resto_location_register);
         locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -118,9 +151,23 @@ public class RegisterSecondResto extends AppCompatActivity {
             YoYo.with(Techniques.StandUp).duration(500).playOn(nextButton);
             return;
         }
-        if(locationSelected!=null){
+        if(locationSelected==null){
             Toast.makeText(this, "Location Null", Toast.LENGTH_SHORT).show();
             return;
+        }
+        if(locationSelected.equalsIgnoreCase("Buea")){
+            writeLocation.child("Buea").push().setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        }
+        if(locationSelected.equalsIgnoreCase("Douala")){
+            writeLocation.child("Douala").push().setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        }
+        if(locationSelected.equalsIgnoreCase("Yaounde")){
+            writeLocation.child("Yaounde").push().setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        }
+        if(locationSelected.equalsIgnoreCase("Limbe")){
+            writeLocation.child("Limbe").push().setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
         }
 
         progressDialog.show();
@@ -136,6 +183,7 @@ public class RegisterSecondResto extends AppCompatActivity {
         map.put("isComplete", "false");
         map.put("isPaid", "false");
         map.put("restoLocation",locationSelected);
+        map.put("restEmail",FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
         databaseReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
