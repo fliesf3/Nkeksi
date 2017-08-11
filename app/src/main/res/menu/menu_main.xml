@@ -3,10 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/logout"
-        android:title="Logout" />
+        android:title="Logout"
+        android:orderInCategory="200"/>
     <item
         android:id="@+id/search"
-        android:title="Search" />
+        android:title="Search"
+        android:orderInCategory="100"/>
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search"

@@ -35,10 +35,10 @@ public class RegisterSecondResto extends AppCompatActivity {
     DatabaseReference databaseReference;
     DatabaseReference writeLocation;
 
-
     ProgressDialog progressDialog;
     String[] location = {"Buea", "Douala", "Yaounde", "Limbe"};
     String locationSelected = null;
+    String lowerCase=null;
 
 
     @Override
@@ -68,18 +68,23 @@ public class RegisterSecondResto extends AppCompatActivity {
         locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
                 switch(i){
                     case 0:
                        locationSelected = locationSpinner.getSelectedItem().toString();
+                       lowerCase = locationSpinner.getSelectedItem().toString().toLowerCase();
                        break;
                     case 1:
                         locationSelected = locationSpinner.getSelectedItem().toString();
+                        lowerCase = locationSpinner.getSelectedItem().toString().toLowerCase();
                         break;
                     case 2:
                         locationSelected = locationSpinner.getSelectedItem().toString();
+                        lowerCase = locationSpinner.getSelectedItem().toString().toLowerCase();
                         break;
                     case 3:
                         locationSelected = locationSpinner.getSelectedItem().toString();
+                        lowerCase = locationSpinner.getSelectedItem().toString().toLowerCase();
                         break;
 
                 }
@@ -128,17 +133,17 @@ public class RegisterSecondResto extends AppCompatActivity {
             return;
         }
         if(locationSelected.equalsIgnoreCase("Buea")){
-            writeLocation.child("Buea").push().setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            writeLocation.child("buea").push().child("location").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
         }
         if(locationSelected.equalsIgnoreCase("Douala")){
-            writeLocation.child("Douala").push().setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            writeLocation.child("douala").push().child("location").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
         }
         if(locationSelected.equalsIgnoreCase("Yaounde")){
-            writeLocation.child("Yaounde").push().setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            writeLocation.child("yaounde").push().child("location").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         }
         if(locationSelected.equalsIgnoreCase("Limbe")){
-            writeLocation.child("Limbe").push().setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            writeLocation.child("limbe").push().child("location").setValue(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         }
 
@@ -155,7 +160,8 @@ public class RegisterSecondResto extends AppCompatActivity {
         map.put("isComplete", "false");
         map.put("isPaid", "false");
         map.put("restoLocation",locationSelected);
-        map.put("restEmail",FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        map.put("indexLocation",lowerCase);
+        map.put("restoEmail",FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
         databaseReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {

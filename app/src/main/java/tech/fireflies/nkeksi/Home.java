@@ -13,9 +13,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
@@ -28,6 +34,8 @@ public class Home extends AppCompatActivity {
             ,R.drawable.chick3,R.drawable.chick4,R.drawable.food,R.drawable.food1,R.drawable.food2,R.drawable.foodie,
             R.drawable.meat,R.drawable.meat2,R.drawable.meat3,R.drawable.meat4};
     MaterialSearchView materialSearchView;
+    Query queryText;
+    DatabaseReference indexRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +49,51 @@ public class Home extends AppCompatActivity {
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
         toolbar.showOverflowMenu();
 
+        indexRef = FirebaseDatabase.getInstance().getReference().child("unVerified");
         carouselView = (CarouselView) findViewById(R.id.slide_me);
         foodList = (RecyclerView) findViewById(R.id.food_list);
 
         materialSearchView = (MaterialSearchView) findViewById(R.id.search_bar);
+
+        materialSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                DefaultAdapter();
+            }
+        });
+
+        materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                queryText = indexRef.orderByChild("indexLocation").startAt(newText.toLowerCase()).endAt(newText.toLowerCase()+"\uf8ff");
+                FirebaseRecyclerAdapter<LocationSearchModel,OnlineLocationHolder> firebaseRecyclerAdapter =
+                        new FirebaseRecyclerAdapter<LocationSearchModel, OnlineLocationHolder>(LocationSearchModel.class,
+                                R.layout.single_food_view,OnlineLocationHolder.class,queryText) {
+                            @Override
+                            protected void populateViewHolder(OnlineLocationHolder viewHolder, LocationSearchModel model, int position) {
+                                viewHolder.setRestoImage(Home.this,model.getRestoImage());
+                                viewHolder.setRestoLocation(model.getRestoLocation());
+                                viewHolder.setRestoName(model.getRestoName());
+                            }
+
+                        };
+                foodList.setLayoutManager(new GridLayoutManager(Home.this,2));
+                foodList.setAdapter(firebaseRecyclerAdapter);
+
+
+                return true;
+            }
+        });
 
         carouselView.setPageCount(images.length);
         carouselView.setImageListener(new ImageListener() {
@@ -56,6 +105,10 @@ public class Home extends AppCompatActivity {
         foodList.setLayoutManager(new GridLayoutManager(this,2));
         foodList.setAdapter(new FoodAdapter(this));
 
+    }
+    public void DefaultAdapter(){
+        foodList.setLayoutManager(new GridLayoutManager(this,2));
+        foodList.setAdapter(new FoodAdapter(this));
     }
     public class FoodAdapter extends RecyclerView.Adapter<FoodHolder>{
 
@@ -88,7 +141,6 @@ public class Home extends AppCompatActivity {
 
         public FoodHolder(View itemView) {
             super(itemView);
-
             imageView = (ImageView) itemView.findViewById(R.id.food_pic);
         }
 
@@ -106,9 +158,7 @@ public class Home extends AppCompatActivity {
 
     @Override
         public boolean onOptionsItemSelected(MenuItem item) {
-            // Handle action bar item clicks here. The action bar will
-            // automatically handle clicks on the Home/Up button, so long
-            // as you specify a parent activity in AndroidManifest.xml.
+
             int id = item.getItemId();
 
             if(id==R.id.logout){
@@ -129,6 +179,28 @@ public class Home extends AppCompatActivity {
             materialSearchView.closeSearch();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    public static class OnlineLocationHolder extends RecyclerView.ViewHolder{
+        ImageView imageView;
+        TextView restoNames,restoLoc;
+
+        public OnlineLocationHolder(View itemView) {
+            super(itemView);
+        }
+        void setRestoImage(Context c,String restoImage){
+            imageView = (ImageView) itemView.findViewById(R.id.food_pic);
+            Picasso.with(c).load(restoImage).placeholder(R.drawable.meat).into(imageView);
+
+        }
+        void setRestoLocation(String restoLocation){
+            restoLoc = (TextView) itemView.findViewById(R.id.resto_loc_search);
+            restoLoc.setText(restoLocation);
+        }
+        void setRestoName(String restoName){
+            restoNames = (TextView)itemView.findViewById(R.id.resto_name_search);
+            restoNames.setText(restoName);
         }
     }
 
