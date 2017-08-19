@@ -151,4 +151,8 @@ public class LoginUser extends AppCompatActivity {
         });
 
     }
+
+    public void SendResetU(View v){
+        startActivity(new Intent(this,ForgotPasswordUser.class));
+    }
 }

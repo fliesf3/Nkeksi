@@ -2,7 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tech.fireflies.nkeksi">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality. 
+    -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -13,36 +24,44 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".GettingStartedUser"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+
+
+        </activity>
         <activity
             android:name=".Splash"
             android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".LoginUser"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".LoginResto"
-            android:screenOrientation="portrait" />
-        <activity android:name=".RegisterUser" />
-        <activity android:name=".RegisterResto" />
-        <activity android:name=".RegisterSecondUser" />
-        <activity android:name=".RegisterSecondResto"/>
-        <activity android:name=".Home"></activity>
-        <activity android:name=".UserProfile"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UserOrResto"
-            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".GetStartedResto"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".TestSearch"/>
+        <activity android:name=".LoginUser" >
+
+        </activity>
+        <activity android:name=".RegisterUser" />
+        <activity android:name=".RegisterSecondUser" />
+        <activity
+            android:name=".Home"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserProfile"
+            android:screenOrientation="portrait" />
+        <activity android:name=".TestSearch" />
+        <activity android:name=".ForgotPasswordUser" />
+        <activity android:name=".RestoDashBoard" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/map_key" />
+
+        <activity
+            android:name=".MapsActivity">
+
+        </activity>
     </application>
 
 </manifest>

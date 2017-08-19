@@ -58,17 +58,6 @@
         android:padding="15dp"
         android:textColorHint="@color/colorPrimary" />
 
-    <Spinner
-        android:id="@+id/location_list_register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/resto_phone_number_register"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/round_edittext"
-        android:padding="20dp" />
-
     <ImageButton
         android:id="@+id/nextButton"
         android:layout_width="60dp"

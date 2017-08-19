@@ -19,6 +19,8 @@
         android:drawableLeft="@drawable/ic_email"
         android:drawablePadding="10dp"
         android:hint="Email"
+        android:maxLines="1"
+        android:imeOptions="actionNext"
         android:padding="15dp" />
 
     <EditText
@@ -31,6 +33,8 @@
         android:background="@drawable/round_edittext"
         android:drawableLeft="@drawable/ic_lock"
         android:drawablePadding="10dp"
+        android:maxLines="1"
+        android:imeOptions="actionDone"
         android:hint="Password"
         android:inputType="textPassword"
         android:padding="15dp" />
@@ -53,7 +57,9 @@
             android:layout_height="wrap_content"
             android:text="Click Here"
             android:textColor="@color/colorPrimary"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:onClick="SendResetU"/>
 
     </LinearLayout>
 
@@ -67,7 +73,7 @@
         android:background="@drawable/round_getstarted"
         android:text="Sign In"
         android:textColor="#fff"
-        android:textStyle="bold"
+
         android:onClick="SignInButton"/>
 
     <View

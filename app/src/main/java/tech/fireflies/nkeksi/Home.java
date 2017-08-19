@@ -14,8 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,6 +31,7 @@ public class Home extends AppCompatActivity {
 
     CarouselView carouselView;
     RecyclerView foodList;
+    FirebaseAnalytics mFirebaseAnalytics;
 
     int[] images = {R.drawable.burger1,R.drawable.burger2,R.drawable.chick2
             ,R.drawable.chick3,R.drawable.chick4,R.drawable.food,R.drawable.food1,R.drawable.food2,R.drawable.foodie,
@@ -48,6 +51,8 @@ public class Home extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
         toolbar.showOverflowMenu();
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         indexRef = FirebaseDatabase.getInstance().getReference().child("unVerified");
         carouselView = (CarouselView) findViewById(R.id.slide_me);
@@ -81,9 +86,16 @@ public class Home extends AppCompatActivity {
                                 R.layout.single_food_view,OnlineLocationHolder.class,queryText) {
                             @Override
                             protected void populateViewHolder(OnlineLocationHolder viewHolder, LocationSearchModel model, int position) {
+                                final String key = getRef(position).getKey();
                                 viewHolder.setRestoImage(Home.this,model.getRestoImage());
                                 viewHolder.setRestoLocation(model.getRestoLocation());
                                 viewHolder.setRestoName(model.getRestoName());
+                                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Toast.makeText(Home.this, ""+key, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
 
                         };
@@ -95,11 +107,11 @@ public class Home extends AppCompatActivity {
             }
         });
 
-        carouselView.setPageCount(images.length);
+        carouselView.setPageCount(3);
         carouselView.setImageListener(new ImageListener() {
             @Override
             public void setImageForPosition(int position, ImageView imageView) {
-                imageView.setImageResource(images[position]);
+                imageView.setImageResource(R.drawable.meat);
             }
         });
         foodList.setLayoutManager(new GridLayoutManager(this,2));
@@ -126,21 +138,28 @@ public class Home extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(FoodHolder holder, int position) {
-            holder.imageView.setImageResource(images[position]);
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(Home.this,RestoDashBoard.class));
+                }
+            });
         }
 
         @Override
         public int getItemCount() {
-            return images.length;
+            return 10;
         }
     }
 
     public class FoodHolder extends RecyclerView.ViewHolder{
 
         ImageView imageView;
+        View mView;
 
         public FoodHolder(View itemView) {
             super(itemView);
+            mView = itemView;
             imageView = (ImageView) itemView.findViewById(R.id.food_pic);
         }
 
@@ -164,10 +183,10 @@ public class Home extends AppCompatActivity {
             if(id==R.id.logout){
                 FirebaseAuth.getInstance().signOut();
                 finish();
-                startActivity(new Intent(this,UserOrResto.class));
+                startActivity(new Intent(this,GettingStartedUser.class));
             }
             if(id==R.id.search){
-                startActivity(new Intent(this,TestSearch.class));
+                startActivity(new Intent(this,MapsActivity.class));
             }
 
             return super.onOptionsItemSelected(item);
@@ -185,21 +204,27 @@ public class Home extends AppCompatActivity {
     public static class OnlineLocationHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
         TextView restoNames,restoLoc;
+        View mView;
 
         public OnlineLocationHolder(View itemView) {
             super(itemView);
+            mView = itemView;
         }
         void setRestoImage(Context c,String restoImage){
+
             imageView = (ImageView) itemView.findViewById(R.id.food_pic);
+            if(!restoImage.isEmpty() && restoImage!=null)
             Picasso.with(c).load(restoImage).placeholder(R.drawable.meat).into(imageView);
 
         }
         void setRestoLocation(String restoLocation){
             restoLoc = (TextView) itemView.findViewById(R.id.resto_loc_search);
+            if(restoLocation!=null && !restoLocation.isEmpty())
             restoLoc.setText(restoLocation);
         }
         void setRestoName(String restoName){
             restoNames = (TextView)itemView.findViewById(R.id.resto_name_search);
+            if(restoName!=null && !restoName.isEmpty())
             restoNames.setText(restoName);
         }
     }
