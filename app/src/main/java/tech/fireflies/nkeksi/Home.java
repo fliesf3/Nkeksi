@@ -93,7 +93,9 @@ public class Home extends AppCompatActivity {
                                 viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        Toast.makeText(Home.this, ""+key, Toast.LENGTH_SHORT).show();
+                                        Intent i = new Intent(Home.this,RestoDashBoard.class);
+                                        i.putExtra("key",key);
+                                        startActivity(i);
                                     }
                                 });
                             }

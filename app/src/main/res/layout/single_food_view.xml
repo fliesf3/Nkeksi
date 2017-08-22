@@ -40,6 +40,8 @@
                     android:text="Fatima"
                     android:textColor="#f0833a"
                     android:textStyle="bold"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:layout_marginLeft="10dp"
                     android:paddingBottom="3dp"
                     android:layout_marginTop="10dp"/>
