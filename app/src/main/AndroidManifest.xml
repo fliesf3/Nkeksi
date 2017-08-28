@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="tech.fireflies.nkeksi">
+    package="tech.firefly.nkeksi">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -19,17 +19,17 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".GettingStartedUser"
+            android:name="tech.firefly.nkeksi.GettingStartedUser"
             android:screenOrientation="portrait" >
 
 
         </activity>
         <activity
-            android:name=".Splash"
+            android:name="tech.firefly.nkeksi.Splash"
             android:screenOrientation="portrait">
 
             <intent-filter>
@@ -39,27 +39,27 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".LoginUser" >
+        <activity android:name="tech.firefly.nkeksi.LoginUser" >
 
         </activity>
-        <activity android:name=".RegisterUser" />
-        <activity android:name=".RegisterSecondUser" />
+        <activity android:name="tech.firefly.nkeksi.RegisterUser" />
+        <activity android:name="tech.firefly.nkeksi.RegisterSecondUser" />
         <activity
-            android:name=".Home"
+            android:name="tech.firefly.nkeksi.Home"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".UserProfile"
+            android:name="tech.firefly.nkeksi.UserProfile"
             android:screenOrientation="portrait" />
-        <activity android:name=".TestSearch" />
-        <activity android:name=".ForgotPasswordUser" />
-        <activity android:name=".RestoDashBoard" />
+        <activity android:name="tech.firefly.nkeksi.TestSearch" />
+        <activity android:name="tech.firefly.nkeksi.ForgotPasswordUser" />
+        <activity android:name="tech.firefly.nkeksi.RestoDashBoard" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_key" />
 
         <activity
-            android:name=".MapsActivity">
+            android:name="tech.firefly.nkeksi.MapsActivity">
 
         </activity>
     </application>
