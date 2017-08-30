@@ -1,4 +1,4 @@
-package tech.fireflies.nkeksi;
+package tech.firefly.nkeksi;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

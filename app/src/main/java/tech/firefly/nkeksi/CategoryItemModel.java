@@ -1,4 +1,4 @@
-package tech.fireflies.nkeksi;
+package tech.firefly.nkeksi;
 
 /**
  * Created by RamsonB on 22-Aug-17.

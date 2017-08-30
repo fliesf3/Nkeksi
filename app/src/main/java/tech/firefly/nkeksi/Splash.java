@@ -1,4 +1,4 @@
-package tech.fireflies.nkeksi;
+package tech.firefly.nkeksi;
 
 import android.content.Intent;
 import android.os.Bundle;

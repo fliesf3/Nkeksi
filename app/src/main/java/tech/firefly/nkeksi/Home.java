@@ -1,4 +1,4 @@
-package tech.fireflies.nkeksi;
+package tech.firefly.nkeksi;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,14 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -33,12 +30,11 @@ public class Home extends AppCompatActivity {
     RecyclerView foodList;
     FirebaseAnalytics mFirebaseAnalytics;
 
-    int[] images = {R.drawable.burger1,R.drawable.burger2,R.drawable.chick2
-            ,R.drawable.chick3,R.drawable.chick4,R.drawable.food,R.drawable.food1,R.drawable.food2,R.drawable.foodie,
-            R.drawable.meat,R.drawable.meat2,R.drawable.meat3,R.drawable.meat4};
+
     MaterialSearchView materialSearchView;
     Query queryText;
     DatabaseReference indexRef;
+    FirebaseRecyclerAdapter<LocationSearchModel,OnlineLocationHolder> FoodAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,17 +56,7 @@ public class Home extends AppCompatActivity {
 
         materialSearchView = (MaterialSearchView) findViewById(R.id.search_bar);
 
-        materialSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
 
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                DefaultAdapter();
-            }
-        });
 
         materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
@@ -117,42 +103,17 @@ public class Home extends AppCompatActivity {
             }
         });
         foodList.setLayoutManager(new GridLayoutManager(this,2));
-        foodList.setAdapter(new FoodAdapter(this));
+        foodList.setAdapter(FoodAdapter);
 
     }
     public void DefaultAdapter(){
         foodList.setLayoutManager(new GridLayoutManager(this,2));
-        foodList.setAdapter(new FoodAdapter(this));
+        foodList.setAdapter(FoodAdapter);
     }
-    public class FoodAdapter extends RecyclerView.Adapter<FoodHolder>{
 
-        Context c;
 
-        public FoodAdapter(Context c) {
-            this.c = c;
-        }
 
-        @Override
-        public FoodHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_food_view,parent,false);
-            return new FoodHolder(v);
-        }
 
-        @Override
-        public void onBindViewHolder(FoodHolder holder, int position) {
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(Home.this,RestoDashBoard.class));
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return 10;
-        }
-    }
 
     public class FoodHolder extends RecyclerView.ViewHolder{
 
@@ -201,6 +162,32 @@ public class Home extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FoodAdapter =
+                new FirebaseRecyclerAdapter<LocationSearchModel, OnlineLocationHolder>(LocationSearchModel.class,
+                        R.layout.single_food_view,OnlineLocationHolder.class,indexRef) {
+                    @Override
+                    protected void populateViewHolder(OnlineLocationHolder viewHolder, LocationSearchModel model, int position) {
+                        final String key = getRef(position).getKey();
+                        viewHolder.setRestoImage(Home.this,model.getRestoImage());
+                        viewHolder.setRestoLocation(model.getRestoLocation());
+                        viewHolder.setRestoName(model.getRestoName());
+                        viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent i = new Intent(Home.this,RestoDashBoard.class);
+                                i.putExtra("key",key);
+                                startActivity(i);
+                            }
+                        });
+                    }
+
+                };
+
     }
 
     public static class OnlineLocationHolder extends RecyclerView.ViewHolder{

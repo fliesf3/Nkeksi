@@ -15,11 +15,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 public class fragMenu extends Fragment {
@@ -28,10 +36,6 @@ public class fragMenu extends Fragment {
     DatabaseReference menuRef;
     String key = "";
     TextView textField;
-    int[] image = {R.drawable.cat_cakes_com, R.drawable.cat_drink_com,
-            R.drawable.cat_icecream_com, R.drawable.cat_pizza, R.drawable.cat_veges_com,
-    };
-    String[] name = {"Cakes", "Drinks", "IceCream", "Pizza", "Vegetables"};
 
 
     public fragMenu() {
@@ -61,6 +65,7 @@ public class fragMenu extends Fragment {
         menuList.setLayoutManager(new LinearLayoutManager(view.getContext()));
         //menuList.setAdapter(new OfflineAdapter());
 
+
         if (key != null && !key.isEmpty()) {
             menuRef = FirebaseDatabase.getInstance().getReference().child("Menu").child("MenuPics");
 
@@ -78,6 +83,41 @@ public class fragMenu extends Fragment {
 
 
         }
+        final String[] getKey = {""};
+       FirebaseDatabase.getInstance().getReference().child("Menu").child("MenuPics").addChildEventListener(new ChildEventListener() {
+           @Override
+           public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+               Iterator i = dataSnapshot.getChildren().iterator();
+
+               while(i.hasNext()) {
+                   int j = 0;
+
+                   String name = (String) ((DataSnapshot) i.next()).getKey();
+                   Toast.makeText(getActivity(), "Size"+j+" = " + name, Toast.LENGTH_SHORT).show();
+                   j++;
+               }
+           }
+
+           @Override
+           public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+           }
+
+           @Override
+           public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+           }
+
+           @Override
+           public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+           }
+
+           @Override
+           public void onCancelled(DatabaseError databaseError) {
+
+           }
+       });
 
     }
 
@@ -115,36 +155,5 @@ public class fragMenu extends Fragment {
 
     }
 
-    public class OfflineAdapter extends RecyclerView.Adapter<OfflineHolder> {
 
-        @Override
-        public OfflineHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_menu_category, parent, false);
-            return new OfflineHolder(v);
-        }
-
-        @Override
-        public void onBindViewHolder(OfflineHolder holder, int position) {
-            holder.catImage.setImageResource(image[position]);
-            holder.catName.setText(name[position]);
-        }
-
-        @Override
-        public int getItemCount() {
-            return image.length;
-        }
-    }
-
-    public class OfflineHolder extends RecyclerView.ViewHolder {
-
-        ImageView catImage;
-        TextView catName;
-
-        public OfflineHolder(View itemView) {
-            super(itemView);
-            catImage = itemView.findViewById(R.id.categoryImage);
-            catName = itemView.findViewById(R.id.categoryName);
-        }
-
-    }
 }
