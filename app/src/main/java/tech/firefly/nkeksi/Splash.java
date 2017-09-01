@@ -5,11 +5,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.Random;
 
 
 public class Splash extends AppCompatActivity {
+
+    TextView appTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -17,8 +23,12 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         ImageView logoDisplay = (ImageView) findViewById(R.id.logoDisplay);
+        appTitle = (TextView) findViewById(R.id.app_title);
 
-        int[] logo = {R.drawable.logo1,R.drawable.logo3};
+        YoYo.with(Techniques.RotateInDownLeft).duration(1500).playOn(appTitle);
+        YoYo.with(Techniques.Shake).duration(1000).delay(1500).playOn(appTitle);
+
+        int[] logo = {R.drawable.splash,R.drawable.splash1,R.drawable.splash2};
         Random random = new Random();
         int range = random.nextInt(logo.length);
         logoDisplay.setImageResource(logo[range]);

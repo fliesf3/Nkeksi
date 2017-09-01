@@ -19,6 +19,7 @@
         android:drawableLeft="@drawable/ic_email"
         android:drawablePadding="10dp"
         android:hint="Email"
+        android:lines="1"
         android:maxLines="1"
         android:imeOptions="actionNext"
         android:padding="15dp" />
@@ -33,6 +34,7 @@
         android:background="@drawable/round_edittext"
         android:drawableLeft="@drawable/ic_lock"
         android:drawablePadding="10dp"
+        android:lines="1"
         android:maxLines="1"
         android:imeOptions="actionDone"
         android:hint="Password"

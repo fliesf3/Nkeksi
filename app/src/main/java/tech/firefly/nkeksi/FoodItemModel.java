@@ -4,18 +4,18 @@ package tech.firefly.nkeksi;
  * Created by RamsonB on 22-Aug-17.
  */
 
-public class CategoryItemModel {
+public class FoodItemModel {
 
     private String description;
     private String item;
     private String pic;
     private String price;
 
-    public CategoryItemModel(){
+    public FoodItemModel(){
 
     }
 
-    public CategoryItemModel(String description, String item, String pic, String price) {
+    public FoodItemModel(String description, String item, String pic, String price) {
         this.description = description;
         this.item = item;
         this.pic = pic;

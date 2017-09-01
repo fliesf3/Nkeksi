@@ -1,4 +1,4 @@
-package tech.fireflies.nkeksi;
+package tech.firefly.nkeksi;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

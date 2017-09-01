@@ -2,6 +2,7 @@ package tech.firefly.nkeksi;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.ChildEventListener;
@@ -26,7 +26,6 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -56,14 +55,9 @@ public class fragMenu extends Fragment {
 
         key = getActivity().getIntent().getStringExtra("key");
 
-        Toast.makeText(getActivity(), "" + key, Toast.LENGTH_SHORT).show();
-
-        //textField = (TextView) view.findViewById(R.id.textField);
-
-
         menuList = (RecyclerView) view.findViewById(R.id.resto_menu_list);
         menuList.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        //menuList.setAdapter(new OfflineAdapter());
+
 
 
         if (key != null && !key.isEmpty()) {
@@ -73,9 +67,37 @@ public class fragMenu extends Fragment {
                     new FirebaseRecyclerAdapter<MenuCategoryModel, OnlineMenuHolder>(MenuCategoryModel.class, R.layout.single_menu_category,
                             OnlineMenuHolder.class, menuRef) {
                         @Override
-                        protected void populateViewHolder(OnlineMenuHolder viewHolder, MenuCategoryModel model, int position) {
+                        protected void populateViewHolder(final OnlineMenuHolder viewHolder, MenuCategoryModel model, int position) {
+                            final String keyMe = getRef(position).getKey();
                             viewHolder.setImage(getActivity(), model.getImage());
                             viewHolder.setName(model.getName());
+
+                            if (keyMe != null) {
+                                DatabaseReference menuReference = FirebaseDatabase.getInstance().getReference().child("Menu").child(key).child(keyMe);
+                                menuReference.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        long count = dataSnapshot.getChildrenCount();
+                                        viewHolder.catCount.setText(String.valueOf(count));
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent i = new Intent(getActivity(),FoodItemActivity.class);
+                                        i.putExtra("prevKey",key);
+                                        i.putExtra("currKey",keyMe);
+                                        getActivity().startActivity(i);
+                                    }
+                                });
+
+                            }
                         }
                     };
             menuList.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -83,41 +105,38 @@ public class fragMenu extends Fragment {
 
 
         }
-        final String[] getKey = {""};
-       FirebaseDatabase.getInstance().getReference().child("Menu").child("MenuPics").addChildEventListener(new ChildEventListener() {
-           @Override
-           public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-               Iterator i = dataSnapshot.getChildren().iterator();
 
-               while(i.hasNext()) {
-                   int j = 0;
+        FirebaseDatabase.getInstance().getReference().child("Menu").child("MenuPics").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                   String name = (String) ((DataSnapshot) i.next()).getKey();
-                   Toast.makeText(getActivity(), "Size"+j+" = " + name, Toast.LENGTH_SHORT).show();
-                   j++;
-               }
-           }
+                String name = dataSnapshot.getKey();
+                List<String> gotten = new ArrayList<>();
+                gotten.add(name);
+                //Toast.makeText(getActivity(), ""+gotten.size(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), ""+gotten.get(2), Toast.LENGTH_SHORT).show();
+            }
 
-           @Override
-           public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-           }
+            }
 
-           @Override
-           public void onChildRemoved(DataSnapshot dataSnapshot) {
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-           }
+            }
 
-           @Override
-           public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-           }
+            }
 
-           @Override
-           public void onCancelled(DatabaseError databaseError) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-           }
-       });
+            }
+        });
 
     }
 
@@ -125,9 +144,13 @@ public class fragMenu extends Fragment {
     public static class OnlineMenuHolder extends RecyclerView.ViewHolder {
         ImageView catImage;
         TextView catName;
+        TextView catCount;
+        View mView;
 
         public OnlineMenuHolder(View itemView) {
             super(itemView);
+            mView = itemView;
+            catCount = itemView.findViewById(R.id.categoryCount);
         }
 
         public void setName(String name) {
@@ -138,7 +161,7 @@ public class fragMenu extends Fragment {
         public void setImage(final Context c, final String image) {
             catImage = itemView.findViewById(R.id.categoryImage);
             if (!image.isEmpty() && image != null) {
-                Picasso.with(c).load(image).placeholder(R.drawable.cat_drink_com).networkPolicy(NetworkPolicy.OFFLINE)
+                Picasso.with(c).load(image).placeholder(R.drawable.defaultloader).networkPolicy(NetworkPolicy.OFFLINE)
                         .into(catImage, new Callback() {
                             @Override
                             public void onSuccess() {
@@ -147,7 +170,7 @@ public class fragMenu extends Fragment {
 
                             @Override
                             public void onError() {
-                                Picasso.with(c).load(image).placeholder(R.drawable.cat_drink_com).into(catImage);
+                                Picasso.with(c).load(image).placeholder(R.drawable.defaultloader).into(catImage);
                             }
                         });
             }

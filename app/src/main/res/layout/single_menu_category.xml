@@ -1,23 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp">
+    android:layout_height="170dp"
+    xmlns:tool="http://schemas.android.com/tools">
 
     <ImageView
         android:id="@+id/categoryImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/cat_drinks2"
+        android:background="@drawable/cat_drink_com"
         android:scaleType="centerCrop" />
+
+    <View
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/view_darker_bg_left"/>
+    <View
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/view_darker_bg_right"/>
 
     <TextView
         android:id="@+id/categoryName"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="20sp"
         android:layout_marginStart="20dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textColor="#fff"
+        tool:text="Hello World My Friend"
         android:textSize="35sp" />
     <TextView
         android:id="@+id/categoryCount"

@@ -29,7 +29,7 @@
                 android:layout_height="80dp"
                 android:layout_gravity="center_horizontal"
                 android:scaleType="centerCrop"
-                android:src="@drawable/meat2" />
+                android:src="@drawable/meat" />
 
             <TextView
                 android:id="@+id/user_name_profile"
