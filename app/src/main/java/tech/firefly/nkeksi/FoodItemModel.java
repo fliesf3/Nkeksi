@@ -10,16 +10,21 @@ public class FoodItemModel {
     private String item;
     private String pic;
     private String price;
+    private String email;
+    private String phone;
+
 
     public FoodItemModel(){
 
     }
 
-    public FoodItemModel(String description, String item, String pic, String price) {
+    public FoodItemModel(String description, String item, String pic, String price, String email, String phone) {
         this.description = description;
         this.item = item;
         this.pic = pic;
         this.price = price;
+        this.email = email;
+        this.phone = phone;
     }
 
     public String getDescription() {
@@ -52,5 +57,21 @@ public class FoodItemModel {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

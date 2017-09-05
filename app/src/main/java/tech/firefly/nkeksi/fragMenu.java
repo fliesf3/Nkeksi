@@ -103,6 +103,8 @@ public class fragMenu extends Fragment {
             menuList.setLayoutManager(new LinearLayoutManager(getActivity()));
             menuList.setAdapter(adapterOnline);
 
+            menuRef.keepSynced(true);
+
 
         }
 

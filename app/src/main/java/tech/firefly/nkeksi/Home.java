@@ -3,6 +3,7 @@ package tech.firefly.nkeksi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,8 +27,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ImageClickListener;
 import com.synnapps.carouselview.ImageListener;
 
 import java.util.ArrayList;
@@ -38,9 +42,12 @@ public class Home extends AppCompatActivity {
     RecyclerView foodList;
     FirebaseAnalytics mFirebaseAnalytics;
 
-    String[] imageExt = new String[4] ;
-
     List<String> addImage = new ArrayList<>();
+
+    FloatingActionMenu floatMenu;
+    com.github.clans.fab.FloatingActionButton profileFAB;
+    com.github.clans.fab.FloatingActionButton logoutFAB;
+    com.github.clans.fab.FloatingActionButton settingFAB;
 
 
     MaterialSearchView materialSearchView;
@@ -60,6 +67,41 @@ public class Home extends AppCompatActivity {
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
         toolbar.showOverflowMenu();
 
+        floatMenu = (FloatingActionMenu) findViewById(R.id.home_fab_menu);
+        profileFAB = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.profileFAB);
+        settingFAB = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.settingFAB);
+        logoutFAB = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.logoutFAB);
+
+        floatMenu.setMenuButtonColorNormal(getResources().getColor(R.color.colorPrimary));
+        floatMenu.setMenuButtonColorPressed(getResources().getColor(R.color.colorPrimaryDark));
+        profileFAB.setColorNormal(getResources().getColor(R.color.colorPrimary));
+        profileFAB.setColorPressed(getResources().getColor(R.color.colorPrimaryDark));
+        settingFAB.setColorNormal(getResources().getColor(R.color.colorPrimary));
+        settingFAB.setColorPressed(getResources().getColor(R.color.colorPrimaryDark));
+        logoutFAB.setColorNormal(getResources().getColor(R.color.colorPrimary));
+        logoutFAB.setColorPressed(getResources().getColor(R.color.colorPrimaryDark));
+        logoutFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                finish();
+                startActivity(new Intent(Home.this, GettingStartedUser.class));
+                floatMenu.close(true);
+            }
+        });
+        settingFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(Home.this, "Under Development...", Toast.LENGTH_SHORT).show();
+            }
+        });
+        profileFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(Home.this, "Under Development...", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         indexRef = FirebaseDatabase.getInstance().getReference().child("unVerified");
@@ -67,15 +109,21 @@ public class Home extends AppCompatActivity {
         foodList = (RecyclerView) findViewById(R.id.food_list);
 
         materialSearchView = (MaterialSearchView) findViewById(R.id.search_bar);
+        carouselView.setPageCount(4);
 
         DatabaseReference car = FirebaseDatabase.getInstance().getReference().child("Menu").child("Carousel");
         car.child("image1").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String get = dataSnapshot.getValue(String.class);
-                imageExt[0]=get;
+                final String get = dataSnapshot.getValue(String.class);
                 addImage.add(get);
                 Toast.makeText(Home.this, "Get  = " + addImage.get(1), Toast.LENGTH_SHORT).show();
+                carouselView.setImageListener(new ImageListener() {
+                    @Override
+                    public void setImageForPosition(int position, ImageView imageView) {
+                        Picasso.with(Home.this).load(get).into(imageView);
+                    }
+                });
             }
 
             @Override
@@ -89,7 +137,7 @@ public class Home extends AppCompatActivity {
                 String get = dataSnapshot.getValue(String.class);
 
                 addImage.add(get);
-                imageExt[1]=get;
+
             }
 
             @Override
@@ -103,7 +151,6 @@ public class Home extends AppCompatActivity {
                 String get = dataSnapshot.getValue(String.class);
 
                 addImage.add(get);
-                imageExt[2]=get;
             }
 
             @Override
@@ -125,8 +172,6 @@ public class Home extends AppCompatActivity {
 
             }
         });
-
-
         materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -164,7 +209,6 @@ public class Home extends AppCompatActivity {
             }
         });
 
-        carouselView.setPageCount(4);
         carouselView.setImageListener(new ImageListener() {
             @Override
             public void setImageForPosition(int position, ImageView imageView) {
@@ -176,20 +220,26 @@ public class Home extends AppCompatActivity {
         foodList.setLayoutManager(new GridLayoutManager(this, 2));
         foodList.setAdapter(FoodAdapter);
 
+        indexRef.keepSynced(true);
+
     }
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem item = menu.findItem(R.id.action_search);
         materialSearchView.setMenuItem(item);
+
+
+
+
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
 
         int id = item.getItemId();
 
@@ -200,6 +250,34 @@ public class Home extends AppCompatActivity {
         }
         if (id == R.id.search) {
             startActivity(new Intent(this, MapsActivity.class));
+        }
+        if(id == R.id.shop_cart){
+            FirebaseDatabase.getInstance().getReference().child("User Cart")
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            //you can add some logic (hide it if the count == 0)
+                            if (dataSnapshot.getChildrenCount() > 0) {
+                                ActionItemBadge.update(item,getResources().getDrawable(R.drawable.ic_shopping_cart_white_24dp)
+                                        , String.valueOf(dataSnapshot.getChildrenCount()));
+                                ImageView view = (ImageView) findViewById(R.id.menu_badge_icon);
+                                view.setImageResource(R.drawable.ic_shopping_cart_white_24dp);
+                                invalidateOptionsMenu();
+
+                            } else {
+                                ActionItemBadge.hide(item);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+            Toast.makeText(this, "Toast = ", Toast.LENGTH_SHORT).show();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -239,6 +317,7 @@ public class Home extends AppCompatActivity {
                 };
         foodList.setLayoutManager(new GridLayoutManager(this, 2));
         foodList.setAdapter(FoodAdapter);
+        indexRef.keepSynced(true);
 
     }
 
