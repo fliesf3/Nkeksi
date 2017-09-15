@@ -1,4 +1,4 @@
-package tech.firefly.nkeksi;
+package tech.firefly.nkeksi.fragment;
 
 
 import android.content.Context;
@@ -27,6 +27,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import tech.firefly.nkeksi.FoodItemActivity;
+import tech.firefly.nkeksi.R;
+import tech.firefly.nkeksi.model.MenuCategoryModel;
 
 
 public class fragMenu extends Fragment {

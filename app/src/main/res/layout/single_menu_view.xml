@@ -31,6 +31,10 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
+                app:civ_shadow="true"
+                app:civ_shadow_color="@color/colorPrimary"
+                app:civ_shadow_radius="10"
+                app:civ_border="false"
                 android:src="@drawable/meat" />
 
             <LinearLayout
@@ -49,7 +53,7 @@
                     android:layout_gravity="center_vertical|center_horizontal"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    tool:text="XAF"
+                    android:text="XAF"
                     android:textColor="#f5bf03"
                     android:textStyle="bold" />
 

@@ -1,4 +1,4 @@
-package tech.firefly.nkeksi;
+package tech.firefly.nkeksi.fragment;
 
 
 import android.os.Bundle;
@@ -18,6 +18,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+
+import tech.firefly.nkeksi.R;
 
 
 public class fragDetails extends Fragment {

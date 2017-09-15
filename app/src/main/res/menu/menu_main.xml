@@ -18,6 +18,6 @@
         android:id="@+id/shop_cart"
         android:title="Cart"
         android:icon="@drawable/ic_shopping_cart_white_24dp"
-        app:actionLayout="@layout/menu_action_item_badge"
+        app:actionLayout="@layout/layout_menu"
         app:showAsAction="always"/>
 </menu>

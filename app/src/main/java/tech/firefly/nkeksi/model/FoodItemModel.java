@@ -1,4 +1,4 @@
-package tech.firefly.nkeksi;
+package tech.firefly.nkeksi.model;
 
 /**
  * Created by RamsonB on 22-Aug-17.
@@ -9,16 +9,16 @@ public class FoodItemModel {
     private String description;
     private String item;
     private String pic;
-    private String price;
+    private int price;
     private String email;
     private String phone;
 
 
-    public FoodItemModel(){
+    public FoodItemModel() {
 
     }
 
-    public FoodItemModel(String description, String item, String pic, String price, String email, String phone) {
+    public FoodItemModel(String description, String item, String pic, int price, String email, String phone) {
         this.description = description;
         this.item = item;
         this.pic = pic;
@@ -51,11 +51,11 @@ public class FoodItemModel {
         this.pic = pic;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

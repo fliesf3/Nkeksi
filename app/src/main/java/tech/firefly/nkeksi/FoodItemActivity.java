@@ -1,9 +1,7 @@
 package tech.firefly.nkeksi;
 
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,11 +22,11 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
-import com.ramotion.foldingcell.*;
 
 import java.util.HashMap;
 
 import me.wangyuwei.shoppoing.ShoppingView;
+import tech.firefly.nkeksi.model.FoodItemModel;
 
 
 public class FoodItemActivity extends AppCompatActivity {
@@ -37,6 +34,7 @@ public class FoodItemActivity extends AppCompatActivity {
     RecyclerView foodDetailList;
     String restoKey;
     String foodKey;
+    FirebaseAuth firebaseAuth;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +50,8 @@ public class FoodItemActivity extends AppCompatActivity {
         restoKey = getIntent().getStringExtra("prevKey");
         foodKey = getIntent().getStringExtra("currKey");
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
 
         foodDetailList = (RecyclerView) findViewById(R.id.foodDetailList);
 
@@ -61,7 +61,7 @@ public class FoodItemActivity extends AppCompatActivity {
                         FirebaseDatabase.getInstance().getReference().child("Menu")
                                 .child(restoKey).child(foodKey)) {
                     @Override
-                    protected void populateViewHolder(final FoodDetailHolder viewHolder, FoodItemModel model, int position) {
+                    protected void populateViewHolder(final FoodDetailHolder viewHolder, final FoodItemModel model, int position) {
                         final String foodListKey = getRef(position).getKey();
                         viewHolder.setItem(model.getItem());
                         viewHolder.setDescription(model.getDescription());
@@ -70,11 +70,16 @@ public class FoodItemActivity extends AppCompatActivity {
                         viewHolder.mSv1.setOnShoppingClickListener(new ShoppingView.ShoppingClickListener() {
                             @Override
                             public void onAddClick(int num) {
-                                HashMap<String, Object> addMap = new HashMap<>();
+                                final HashMap<String, Object> addMap = new HashMap<>();
                                 addMap.put("restoUID", restoKey);
                                 addMap.put("quantity", num);
                                 addMap.put("foodID", foodListKey);
-                                addMap.put("foodCategoryKey",foodKey);
+                                addMap.put("foodCategoryKey", foodKey);
+                                addMap.put("foodPrice", model.getPrice());
+                                addMap.put("foodDesc", model.getDescription());
+                                addMap.put("foodName", model.getItem());
+                                addMap.put("foodPic", model.getPic());
+
                                 if (num > 0) {
                                     FirebaseDatabase.getInstance().getReference().child("User Cart")
                                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -93,7 +98,7 @@ public class FoodItemActivity extends AppCompatActivity {
                                 addMap.put("restoUID", restoKey);
                                 addMap.put("quantity", num);
                                 addMap.put("singleFoodID", foodListKey);
-                                addMap.put("foodCategoryKey",foodKey);
+                                addMap.put("foodCategoryKey", foodKey);
                                 if (num > 0) {
                                     FirebaseDatabase.getInstance().getReference().child("User Cart")
                                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -149,9 +154,9 @@ public class FoodItemActivity extends AppCompatActivity {
             });
         }
 
-        void setPrice(String price) {
+        void setPrice(int price) {
             pricing = (TextView) itemView.findViewById(R.id.dish_price);
-            pricing.setText(price);
+            pricing.setText(String.valueOf(price));
         }
 
         void setDescription(String description) {

@@ -8,6 +8,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import tech.firefly.nkeksi.fragment.fragDetails;
+import tech.firefly.nkeksi.fragment.fragMenu;
+import tech.firefly.nkeksi.fragment.fragReview;
+
 public class RestoDashBoard extends AppCompatActivity {
 
     ViewPager restoSlide;
