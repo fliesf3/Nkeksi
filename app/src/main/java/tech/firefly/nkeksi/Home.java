@@ -87,9 +87,10 @@ public class Home extends AppCompatActivity {
         logoutFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
+                /*FirebaseAuth.getInstance().signOut();
                 finish();
-                startActivity(new Intent(Home.this, GettingStartedUser.class));
+                startActivity(new Intent(Home.this, GettingStartedUser.class));*/
+                Toast.makeText(Home.this, "Coming Soon", Toast.LENGTH_SHORT).show();
                 floatMenu.close(true);
             }
         });
@@ -148,6 +149,7 @@ public class Home extends AppCompatActivity {
                         };
                 foodList.setLayoutManager(new GridLayoutManager(Home.this, 2));
                 foodList.setAdapter(firebaseRecyclerAdapter);
+                foodList.setNestedScrollingEnabled(false);
 
 
                 return true;
@@ -164,7 +166,7 @@ public class Home extends AppCompatActivity {
         });
         foodList.setLayoutManager(new GridLayoutManager(this, 2));
         foodList.setAdapter(FoodAdapter);
-        foodList.smoothScrollToPosition(0);
+        foodList.setNestedScrollingEnabled(false);
 
         indexRef.keepSynced(true);
 
@@ -277,6 +279,7 @@ public class Home extends AppCompatActivity {
                 };
         foodList.setLayoutManager(new GridLayoutManager(this, 2));
         foodList.setAdapter(FoodAdapter);
+        foodList.setNestedScrollingEnabled(false);
         indexRef.keepSynced(true);
 
     }

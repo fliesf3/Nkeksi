@@ -51,6 +51,8 @@ dependencies {
     compile 'com.github.clans:fab:1.6.4'
     //Search View
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
+    //Like Button Animation Library
+    compile 'com.github.jd-alexander:LikeButton:0.2.1'
     //Slideing Button
     //compile 'com.ebanx:swipe-button:0.4.0'
     compile 'com.ramotion.foldingcell:folding-cell:1.2.1'
@@ -58,15 +60,7 @@ dependencies {
     //Shopping View
     compile 'me.wangyuwei:shoppoing:1.0.5'
 
-    compile 'com.mikepenz:actionitembadge:3.3.1@aar'
-
-    //SUB-DEPENDENCIES
-    //Android-Iconics - used to provide an easy API for icons
-    compile 'com.mikepenz:iconics-core:2.8.1@aar'
-
     testCompile 'junit:junit:4.12'
 }
-
-
 
 apply plugin: 'com.google.gms.google-services'
