@@ -57,10 +57,17 @@ dependencies {
     //compile 'com.ebanx:swipe-button:0.4.0'
     compile 'com.ramotion.foldingcell:folding-cell:1.2.1'
 
+    compile 'com.github.florent37:materialtextfield:1.0.7'
+
     //Shopping View
     compile 'me.wangyuwei:shoppoing:1.0.5'
 
+    compile 'com.jaredrummler:material-spinner:1.2.1'
+
     testCompile 'junit:junit:4.12'
 }
+
+
+
 
 apply plugin: 'com.google.gms.google-services'

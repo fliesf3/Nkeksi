@@ -34,9 +34,6 @@ public class CartDetail extends AppCompatActivity {
     FirebaseAuth auth;
     RecyclerView cartList;
     DatabaseReference cartRef;
-    List<String> restoUIDArray = new ArrayList<>();
-    List<String> foodCatArray = new ArrayList<>();
-    List<String> foodIdArray = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

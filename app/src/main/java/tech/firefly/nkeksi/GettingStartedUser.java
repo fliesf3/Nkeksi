@@ -26,22 +26,22 @@ public class GettingStartedUser extends AppCompatActivity {
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(user !=null ){
-                    startActivity(new Intent(GettingStartedUser.this,Home.class));
+                if (user != null) {
+                    startActivity(new Intent(GettingStartedUser.this, DeliveryAddress.class));
                     finish();
                 }
             }
         };
     }
 
-    public void RegisterBtn(View v){
-        startActivity(new Intent(this,RegisterUser.class));
-        YoYo.with(Techniques.RubberBand).duration(500).playOn((Button)findViewById(R.id.registerBtn));
+    public void RegisterBtn(View v) {
+        startActivity(new Intent(this, RegisterUser.class));
+        YoYo.with(Techniques.RubberBand).duration(500).playOn((Button) findViewById(R.id.registerBtn));
     }
 
-    public void SignInBtn(View v){
-        startActivity(new Intent(this,LoginUser.class));
-        YoYo.with(Techniques.RubberBand).duration(500).playOn((Button)findViewById(R.id.signInBtn));
+    public void SignInBtn(View v) {
+        startActivity(new Intent(this, LoginUser.class));
+        YoYo.with(Techniques.RubberBand).duration(500).playOn((Button) findViewById(R.id.signInBtn));
     }
 
     @Override

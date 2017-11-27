@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#c0c0c0"
+    tools:context="tech.firefly.nkeksi.Enter_Resto_Detail">
+
+    <EditText
+        android:id="@+id/description_temp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Description"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/name_temp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Restaurant Name"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/item_name_temp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Item Name"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/price_temp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Price"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/pic_temp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Pic"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/availabitity_temp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Availability"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/meal_cat_temp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Meal Category"
+        android:inputType="text"/>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:onClick="SaveInfoTemp"/>
+
+</LinearLayout>

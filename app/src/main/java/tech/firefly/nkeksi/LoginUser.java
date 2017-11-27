@@ -137,8 +137,9 @@ public class LoginUser extends AppCompatActivity {
                     }
                 });
 
-                finish();
-                startActivity(new Intent(LoginUser.this,Home.class));
+                Intent intent = new Intent(LoginUser.this,DeliveryAddress.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
 
             }
         }).addOnFailureListener(new OnFailureListener() {

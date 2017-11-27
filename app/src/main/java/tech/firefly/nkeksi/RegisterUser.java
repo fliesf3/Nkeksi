@@ -84,9 +84,10 @@ public class RegisterUser extends AppCompatActivity {
         auth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                finish();
                 progressDialog.dismiss();
-                startActivity(new Intent(RegisterUser.this,RegisterSecondUser.class));
+                Intent intent = new Intent(RegisterUser.this,RegisterSecondUser.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

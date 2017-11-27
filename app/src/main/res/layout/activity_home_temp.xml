@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/lay1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/tool"
+            layout="@layout/toolbar" />
+
+        <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:textColorHint="#fff"
+            app:searchBackground="@color/colorPrimary" />
+
+    </RelativeLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/lay2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/lay1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.synnapps.carouselview.CarouselView
+                android:id="@+id/slide_me"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                app:animateOnBoundary="true"
+                app:autoPlay="true"
+                app:fillColor="@color/colorPrimary"
+                app:indicatorGravity="center_horizontal|top"
+                app:indicatorVisibility="visible"
+                app:slideInterval="5000" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/food_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/slide_me" />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/home_fab_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        app:menu_fab_size="normal">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/profileFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_person"
+            app:fabSize="mini"
+            app:fab_label="Profile"
+            app:menu_fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/settingFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_settings"
+            app:fabSize="mini"
+            app:fab_label="Setting" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/logoutFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_favorite_white"
+            app:fabSize="mini"
+            app:fab_label="Favourite" />
+
+    </com.github.clans.fab.FloatingActionMenu>
+
+</RelativeLayout>

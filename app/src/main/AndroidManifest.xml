@@ -25,7 +25,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".GettingStartedUser"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Splash"
             android:screenOrientation="portrait">
@@ -35,31 +35,38 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginUser"></activity>
-        <activity android:name=".RegisterUser"
-            android:launchMode="singleInstance"/>
-        <activity android:name=".RegisterSecondUser"
-            android:launchMode="singleInstance"/>
+        <activity android:name=".LoginUser" />
+        <activity
+            android:name=".RegisterUser"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".RegisterSecondUser"
+            android:launchMode="singleInstance" />
         <activity
             android:name=".Home"
-            android:screenOrientation="portrait"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UserProfile"
             android:screenOrientation="portrait" />
         <activity android:name=".TestSearch" />
-        <activity android:name=".ForgotPasswordUser"
-            android:launchMode="singleInstance"/>
+        <activity android:name=".HomeTemp" />
+        <activity
+            android:name=".ForgotPasswordUser"
+            android:launchMode="singleInstance" />
         <activity android:name=".RestoDashBoard" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_key" />
 
-        <activity android:name=".MapsActivity"></activity>
+        <activity android:name=".MapsActivity" />
         <activity android:name=".FoodItemActivity" />
-        <activity android:name=".CartDetail"></activity>
-        <activity android:name=".EditProfile"/>
+        <activity android:name=".CartDetail" />
+        <activity android:name=".EditProfile" />
+        <activity android:name=".DeliveryAddress" />
+        <activity android:name=".Enter_Resto_Detail" />
+        <activity android:name=".CustomerService"></activity>
     </application>
 
 </manifest>
