@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class RegisterSecondUser extends AppCompatActivity {
@@ -72,11 +74,22 @@ public class RegisterSecondUser extends AppCompatActivity {
 
         progressDialog.show();
 
-        HashMap<String,String> map = new HashMap<>();
+
+        //COLLECTING DATE FROM DEVICE
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat mdformat = new SimpleDateFormat("yyyy/MM/dd ");
+        String strDate = mdformat.format(calendar.getTime());
+
+        HashMap<String,Object> map = new HashMap<>();
         map.put("firstName",first);
         map.put("lastName",last);
         map.put("phoneNumber", String.valueOf(phone));
-        map.put("isResto","false");
+        map.put("isResto",false);
+        map.put("email",FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        map.put("profile_picture","https://api.adorable.io/avatars/285/"+first+".png");
+        map.put("date",strDate);
+
+
         databaseReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .setValue(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

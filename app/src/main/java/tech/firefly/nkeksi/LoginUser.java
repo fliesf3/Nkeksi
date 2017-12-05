@@ -99,13 +99,12 @@ public class LoginUser extends AppCompatActivity {
                 checkIfResto.child(auth.getCurrentUser().getUid()).child("isResto").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        String val = dataSnapshot.getValue(String.class);
-                        if(val!=null){
-                            if(val.equalsIgnoreCase("true")){
+                        if(dataSnapshot.getValue(Boolean.class)!=null){
+                            if(dataSnapshot.getValue(Boolean.class)){
                                 Toast.makeText(LoginUser.this, "Yay You Are A Restaurant", Toast.LENGTH_SHORT).show();
 
                             }
-                            if(val.equalsIgnoreCase("false")){
+                            if(!dataSnapshot.getValue(Boolean.class)){
                                 Toast.makeText(LoginUser.this, "Yay You Are A User", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -119,13 +118,13 @@ public class LoginUser extends AppCompatActivity {
                 checkIfRestoSecond.child(auth.getCurrentUser().getUid()).child("isResto").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        String val = dataSnapshot.getValue(String.class);
-                        if(val!=null){
-                            if(val.equalsIgnoreCase("true")){
+
+                        if(dataSnapshot.getValue(Boolean.class)!=null){
+                            if(dataSnapshot.getValue(Boolean.class)){
                                 Toast.makeText(LoginUser.this, "Yay You Are A Restaurant", Toast.LENGTH_SHORT).show();
 
                             }
-                            if(val.equalsIgnoreCase("false")){
+                            if(!dataSnapshot.getValue(Boolean.class)){
                                 Toast.makeText(LoginUser.this, "Yay You Are A User", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -147,7 +146,6 @@ public class LoginUser extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 progressDialog.dismiss();
                 Toast.makeText(LoginUser.this, ""+e, Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
             }
         });
 
