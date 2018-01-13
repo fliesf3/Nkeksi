@@ -1,4 +1,4 @@
-package tech.firefly.nkeksi;
+package tech.firefly.nkeksi.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -23,6 +23,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+
+import tech.firefly.nkeksi.R;
+import tech.firefly.nkeksi.ui.HomeTemp;
 
 public class RegisterSecondUser extends AppCompatActivity {
 
@@ -97,7 +100,7 @@ public class RegisterSecondUser extends AppCompatActivity {
                 Toast.makeText(RegisterSecondUser.this, "Welcome", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
                 finish();
-                startActivity(new Intent(RegisterSecondUser.this,Home.class));
+                startActivity(new Intent(RegisterSecondUser.this,HomeTemp.class));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

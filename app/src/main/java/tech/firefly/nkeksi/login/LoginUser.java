@@ -1,4 +1,4 @@
-package tech.firefly.nkeksi;
+package tech.firefly.nkeksi.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -24,6 +24,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import tech.firefly.nkeksi.user.DeliveryAddress;
+import tech.firefly.nkeksi.R;
 
 /**
  * Created by user on 23-Jul-17.

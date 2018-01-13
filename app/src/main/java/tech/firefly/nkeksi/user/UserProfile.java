@@ -1,4 +1,4 @@
-package tech.firefly.nkeksi;
+package tech.firefly.nkeksi.user;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,6 +17,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
+
+import tech.firefly.nkeksi.R;
 
 
 public class UserProfile extends AppCompatActivity {
@@ -71,7 +73,6 @@ public class UserProfile extends AppCompatActivity {
                     }
                 });
 
-                Toast.makeText(UserProfile.this, "Name: "+dataSnapshot.getValue(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -82,7 +83,38 @@ public class UserProfile extends AppCompatActivity {
         userRef.child("phoneNumber").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                userPhoneDetail.setText(String.valueOf(dataSnapshot.getValue(Long.class)));
+                userPhoneDetail.setText(dataSnapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        userRef.child("profile_picture").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String val = dataSnapshot.getValue(String.class);
+                if(val==null){
+                    userRef.child("profile_pic").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(dataSnapshot!=null){
+                                Picasso.with(getApplicationContext()).load(dataSnapshot.getValue(String.class)).into(userWall);
+                                Picasso.with(getApplicationContext()).load(dataSnapshot.getValue(String.class)).into(userDP);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                if(val!=null){
+                    Picasso.with(getApplicationContext()).load(val).into(userWall);
+                    Picasso.with(getApplicationContext()).load(dataSnapshot.getValue(String.class)).into(userDP);
+                }
             }
 
             @Override

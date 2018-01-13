@@ -1,4 +1,4 @@
-package tech.firefly.nkeksi;
+package tech.firefly.nkeksi.user;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -13,11 +13,8 @@ import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
@@ -26,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import me.wangyuwei.shoppoing.ShoppingView;
+import tech.firefly.nkeksi.R;
 import tech.firefly.nkeksi.model.CartItemModel;
 
 public class CartDetail extends AppCompatActivity {

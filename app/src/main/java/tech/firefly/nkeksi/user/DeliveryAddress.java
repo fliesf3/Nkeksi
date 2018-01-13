@@ -1,4 +1,4 @@
-package tech.firefly.nkeksi;
+package tech.firefly.nkeksi.user;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,25 +15,64 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.util.HashMap;
+
+import tech.firefly.nkeksi.ui.HomeTemp;
+import tech.firefly.nkeksi.R;
 
 public class DeliveryAddress extends AppCompatActivity {
 
     MaterialSpinner delivery_drop;
     EditText quarterText;
     String town = "";
+    DatabaseReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_delivery_address);
 
+        userRef = FirebaseDatabase.getInstance().getReference().child("User Cart").child("Address")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("Info");
+        userRef.child("quarter").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String val = dataSnapshot.getValue(String.class);
+                if(val!=null){
+                    Intent i = new Intent(getApplicationContext(),HomeTemp.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
+                }
+                if(val==null){
+                    setContentView(R.layout.activity_delivery_address);
+                    HouseKeeping();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+    }
+
+    private void HouseKeeping() {
         delivery_drop = (MaterialSpinner) findViewById(R.id.town_drop_delivery);
         delivery_drop.setItems("Choose City", "Yaounde");
         quarterText = (EditText) findViewById(R.id.quarter_text);
+
 
 
         delivery_drop.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
@@ -52,9 +91,8 @@ public class DeliveryAddress extends AppCompatActivity {
                 Snackbar.make(spinner, "Nothing selected", Snackbar.LENGTH_LONG).show();
             }
         });
-
-
     }
+
 
     public void SaveDeliveryAddress(View v) {
         if (TextUtils.isEmpty(quarterText.getText().toString())) {
@@ -68,11 +106,12 @@ public class DeliveryAddress extends AppCompatActivity {
             return;
         }
 
+
         HashMap<String,Object> map = new HashMap<>();
         map.put("town",town);
         map.put("quarter",quarterText.getText().toString().trim());
         YoYo.with(Techniques.RubberBand).duration(500).playOn(v);
-        FirebaseDatabase.getInstance().getReference().child("User Cart")
+        FirebaseDatabase.getInstance().getReference().child("User Cart").child("Address")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).
                 child("Info").updateChildren(map).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

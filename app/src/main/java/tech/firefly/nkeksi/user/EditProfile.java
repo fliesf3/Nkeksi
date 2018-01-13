@@ -1,4 +1,4 @@
-package tech.firefly.nkeksi;
+package tech.firefly.nkeksi.user;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -36,10 +36,12 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 
+import tech.firefly.nkeksi.R;
+
 
 public class EditProfile extends AppCompatActivity {
 
-    EditText firstName,lastName,phoneText;
+    EditText firstName, lastName, phoneText;
     FirebaseAuth auth;
     FirebaseUser user;
     FirebaseDatabase firebaseDatabase;
@@ -53,11 +55,11 @@ public class EditProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        imageView = (CircularImageView)findViewById(R.id.user_image_edit);
-        firstName = (EditText)findViewById(R.id.first_name_edit);
-        lastName = (EditText)findViewById(R.id.last_name_edit);
-        phoneText = (EditText)findViewById(R.id.phone_edit);
-        save = (Button)findViewById(R.id.save_edit);
+        imageView = (CircularImageView) findViewById(R.id.user_image_edit);
+        firstName = (EditText) findViewById(R.id.first_name_edit);
+        lastName = (EditText) findViewById(R.id.last_name_edit);
+        phoneText = (EditText) findViewById(R.id.phone_edit);
+        save = (Button) findViewById(R.id.save_edit);
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
@@ -90,7 +92,7 @@ public class EditProfile extends AppCompatActivity {
         userRef.child("phoneNumber").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                phoneText.setText(String.valueOf(dataSnapshot.getValue(Long.class)));
+                phoneText.setText(dataSnapshot.getValue(String.class));
             }
 
             @Override
@@ -98,11 +100,11 @@ public class EditProfile extends AppCompatActivity {
 
             }
         });
-        userRef.child("image").addValueEventListener(new ValueEventListener() {
+        userRef.child("profile_picture").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue(String.class)!=null)
-                Picasso.with(EditProfile.this).load(dataSnapshot.getValue(String.class)).into(imageView);
+                if (dataSnapshot.getValue(String.class) != null)
+                    Picasso.with(EditProfile.this).load(dataSnapshot.getValue(String.class)).into(imageView);
             }
 
             @Override
@@ -113,14 +115,14 @@ public class EditProfile extends AppCompatActivity {
 
     }
 
-    public void SaveDetails(View v){
-        String first,last;
-        Long phone;
+    public void SaveDetails(View v) {
+        String first, last;
+        String phone;
         first = firstName.getText().toString().trim();
         last = lastName.getText().toString().trim();
-        phone = Long.parseLong(phoneText.getText().toString().trim());
+        phone = phoneText.getText().toString().trim();
 
-        if(TextUtils.isEmpty(first)||TextUtils.isEmpty(last)|| phone ==null){
+        if (TextUtils.isEmpty(first) || TextUtils.isEmpty(last) || phone == null) {
             YoYo.with(Techniques.Shake).duration(500).playOn(save);
             Toast.makeText(this, "Fill All Fields Before Continuing", Toast.LENGTH_SHORT).show();
             return;
@@ -128,7 +130,7 @@ public class EditProfile extends AppCompatActivity {
 
 
         UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
-                .setDisplayName(first+" "+last).build();
+                .setDisplayName(first + " " + last).build();
         user.updateProfile(request);
 
         userRef.child("firstName").setValue(first);
@@ -138,7 +140,7 @@ public class EditProfile extends AppCompatActivity {
             public void onSuccess(Void aVoid) {
                 Toast.makeText(EditProfile.this, "Saved", Toast.LENGTH_SHORT).show();
                 finish();
-                startActivity(new Intent(EditProfile.this,UserProfile.class));
+                startActivity(new Intent(EditProfile.this, UserProfile.class));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -148,27 +150,25 @@ public class EditProfile extends AppCompatActivity {
         });
 
 
-
-
     }
 
-    public void ChangePic(View v){
+    public void ChangePic(View v) {
         Intent i = new Intent();
         i.setAction(Intent.ACTION_GET_CONTENT);
         i.setType("image/*");
-        startActivityForResult(i,100);
+        startActivityForResult(i, 100);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==100 && resultCode == RESULT_OK){
+        if (requestCode == 100 && resultCode == RESULT_OK) {
             final Uri uri = data.getData();
             Bitmap thumbBit = null;
             try {
-                thumbBit = MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
+                thumbBit = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                thumbBit.compress(Bitmap.CompressFormat.JPEG,20,byteArrayOutputStream);
+                thumbBit.compress(Bitmap.CompressFormat.JPEG, 8, byteArrayOutputStream);
                 byte[] bytes = byteArrayOutputStream.toByteArray();
 
                 UploadTask uploadTask = userStoreRef.putBytes(bytes);
@@ -191,7 +191,8 @@ public class EditProfile extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         String link = taskSnapshot.getDownloadUrl().toString();
-                        firebaseDatabase.getReference().child("UserInfo").child(user.getUid()).child("image").setValue(link);
+                        if(link!=null)
+                        firebaseDatabase.getReference().child("UserInfo").child(user.getUid()).child("profile_picture").setValue(link);
                         Toast.makeText(EditProfile.this, "Photo Changed successfully", Toast.LENGTH_SHORT).show();
                         imageView.setImageURI(uri);
                         progressDialog.dismiss();
@@ -200,12 +201,12 @@ public class EditProfile extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(EditProfile.this, "Profile Pic Not Changed Try Again", Toast.LENGTH_SHORT).show();
-
+                        progressDialog.dismiss();
                     }
                 });
 
             } catch (Exception e) {
-                Toast.makeText(this, "Error "+e, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Error " + e, Toast.LENGTH_SHORT).show();
             }
 
 

@@ -1,4 +1,4 @@
-package tech.firefly.nkeksi;
+package tech.firefly.nkeksi.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.Random;
+
+import tech.firefly.nkeksi.R;
 
 
 public class Splash extends AppCompatActivity {

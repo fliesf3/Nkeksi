@@ -1,4 +1,4 @@
-package tech.firefly.nkeksi;
+package tech.firefly.nkeksi.tests;
 
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +12,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
+
+import tech.firefly.nkeksi.R;
 
 public class Enter_Resto_Detail extends AppCompatActivity {
 

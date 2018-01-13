@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="tech.firefly.nkeksi">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -22,12 +23,13 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
+        tools:replace="android:icon"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".GettingStartedUser"
+            android:name=".login.GettingStartedUser"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Splash"
+            android:name=".login.Splash"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,38 +37,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginUser" />
+        <activity android:name=".login.LoginUser" />
         <activity
-            android:name=".RegisterUser"
+            android:name=".login.RegisterUser"
             android:launchMode="singleInstance" />
         <activity
-            android:name=".RegisterSecondUser"
+            android:name=".login.RegisterSecondUser"
             android:launchMode="singleInstance" />
         <activity
-            android:name=".Home"
-            android:launchMode="singleInstance"
+            android:name=".user.UserProfile"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.HomeTemp" />
         <activity
-            android:name=".UserProfile"
-            android:screenOrientation="portrait" />
-        <activity android:name=".TestSearch" />
-        <activity android:name=".HomeTemp" />
-        <activity
-            android:name=".ForgotPasswordUser"
+            android:name=".login.ForgotPasswordUser"
             android:launchMode="singleInstance" />
-        <activity android:name=".RestoDashBoard" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_key" />
 
-        <activity android:name=".MapsActivity" />
-        <activity android:name=".FoodItemActivity" />
-        <activity android:name=".CartDetail" />
-        <activity android:name=".EditProfile" />
-        <activity android:name=".DeliveryAddress" />
-        <activity android:name=".Enter_Resto_Detail" />
-        <activity android:name=".CustomerService"></activity>
+        <activity android:name=".user.CartDetail" />
+        <activity android:name=".user.EditProfile" />
+        <activity android:name=".user.DeliveryAddress" />
+        <activity android:name=".tests.Enter_Resto_Detail" />
+        <activity android:name=".CustomerService" />
+        <activity android:name=".ui.FoodDetailTemp" />
+        <activity android:name=".ReviewMeal"></activity>
     </application>
 
 </manifest>

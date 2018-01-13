@@ -19,9 +19,10 @@
         android:drawableLeft="@drawable/ic_email"
         android:drawablePadding="10dp"
         android:hint="Email"
+        android:imeOptions="actionNext"
+        android:inputType="textEmailAddress"
         android:lines="1"
         android:maxLines="1"
-        android:imeOptions="actionNext"
         android:padding="15dp" />
 
     <EditText
@@ -34,11 +35,11 @@
         android:background="@drawable/round_edittext"
         android:drawableLeft="@drawable/ic_lock"
         android:drawablePadding="10dp"
+        android:hint="Password"
+        android:imeOptions="actionDone"
+        android:inputType="textPassword"
         android:lines="1"
         android:maxLines="1"
-        android:imeOptions="actionDone"
-        android:hint="Password"
-        android:inputType="textPassword"
         android:padding="15dp" />
 
     <LinearLayout
@@ -57,11 +58,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="SendResetU"
+            android:padding="10dp"
             android:text="Click Here"
             android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
-            android:padding="10dp"
-            android:onClick="SendResetU"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -73,10 +74,10 @@
         android:layout_marginRight="40dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/round_getstarted"
+        android:onClick="SignInButton"
         android:text="Sign In"
-        android:textColor="#fff"
 
-        android:onClick="SignInButton"/>
+        android:textColor="#fff" />
 
     <View
         android:layout_width="match_parent"

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1064067035279",
+    "firebase_url": "https://final-nkeksi.firebaseio.com",
+    "project_id": "final-nkeksi",
+    "storage_bucket": "final-nkeksi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1064067035279:android:24592fac33eac671",
+        "android_client_info": {
+          "package_name": "tech.firefly.nkeksi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1064067035279-0nl2nhl1s8gl7e3m2927t7t8qi51auuo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tech.firefly.nkeksi",
+            "certificate_hash": "5bb5d3d5d3d3d9be025722531fecf2e16f36fff7"
+          }
+        },
+        {
+          "client_id": "1064067035279-b9k6u3idqc2ssnufldfck69jkg2qh0o9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUWpelJp4mH_NLThRq5j_xbXNDb92UhK8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1064067035279-b9k6u3idqc2ssnufldfck69jkg2qh0o9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

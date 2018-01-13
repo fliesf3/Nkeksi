@@ -1,12 +1,15 @@
-package tech.firefly.nkeksi;
+package tech.firefly.nkeksi.ui;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,16 +17,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
+import tech.firefly.nkeksi.R;
+import tech.firefly.nkeksi.login.GettingStartedUser;
 import tech.firefly.nkeksi.model.FoodHomeModel;
+import tech.firefly.nkeksi.user.CartDetail;
+import tech.firefly.nkeksi.user.UserProfile;
 
 public class HomeTemp extends AppCompatActivity {
 
@@ -31,6 +44,11 @@ public class HomeTemp extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference tempRef;
     CarouselView carouselView;
+
+    TextView txtViewCount;
+
+    MaterialSearchView materialSearchView;
+    FirebaseAuth auth;
 
     FloatingActionMenu floatMenu;
     com.github.clans.fab.FloatingActionButton profileFAB;
@@ -52,8 +70,11 @@ public class HomeTemp extends AppCompatActivity {
         foodRecycler = (RecyclerView)findViewById(R.id.food_list);
         firebaseDatabase = FirebaseDatabase.getInstance();
         tempRef = firebaseDatabase.getReference().child("TempMenu");
+        auth = FirebaseAuth.getInstance();
 
         carouselView = (CarouselView)findViewById(R.id.slide_me);
+
+        materialSearchView = (MaterialSearchView) findViewById(R.id.search_bar);
 
         floatMenu = (FloatingActionMenu) findViewById(R.id.home_fab_menu);
         profileFAB = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.profileFAB);
@@ -71,9 +92,6 @@ public class HomeTemp extends AppCompatActivity {
         logoutFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*FirebaseAuth.getInstance().signOut();
-                finish();
-                startActivity(new Intent(Home.this, GettingStartedUser.class));*/
                 Toast.makeText(HomeTemp.this, "Coming Soon", Toast.LENGTH_SHORT).show();
                 floatMenu.close(true);
             }
@@ -82,12 +100,14 @@ public class HomeTemp extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(HomeTemp.this, "Under Development...", Toast.LENGTH_SHORT).show();
+                floatMenu.close(true);
             }
         });
         profileFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(HomeTemp.this,UserProfile.class));
+                floatMenu.close(true);
             }
         });
 
@@ -132,14 +152,20 @@ public class HomeTemp extends AppCompatActivity {
                         ShowFoodHolder.class,tempRef) {
                     @Override
                     protected void populateViewHolder(ShowFoodHolder viewHolder, final FoodHomeModel model, int position) {
-                        String foodKey = getRef(position).getKey();
+                        final String foodKey = getRef(position).getKey();
                         viewHolder.setPic(model.getPic(),getApplicationContext());
                         viewHolder.setPrice(model.getPrice());
                         viewHolder.setItem(model.getItem());
                         viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Toast.makeText(HomeTemp.this, "You Clicked "+model.getItem(), Toast.LENGTH_SHORT).show();
+                                floatMenu.close(true);
+                                Intent i = new Intent(getApplicationContext(),FoodDetailTemp.class);
+                                i.putExtra("name",model.getItem());
+                                i.putExtra("prix",String.valueOf(model.getPrice()));
+                                i.putExtra("pic",model.getPic());
+                                i.putExtra("key",foodKey);
+                                startActivity(i);
                             }
                         });
                     }
@@ -148,9 +174,6 @@ public class HomeTemp extends AppCompatActivity {
         foodRecycler.setNestedScrollingEnabled(false);
         foodRecycler.setAdapter(adapter);
         tempRef.keepSynced(true);
-
-
-
     }
 
 
@@ -158,7 +181,7 @@ public class HomeTemp extends AppCompatActivity {
     public static class ShowFoodHolder extends RecyclerView.ViewHolder{
 
         View mView;
-        ImageView imageView;
+        KenBurnsView imageView;
         Button button;
         TextView textView;
 
@@ -168,7 +191,7 @@ public class HomeTemp extends AppCompatActivity {
         }
 
         void setPic(final String pic, final Context context){
-            imageView = (ImageView)itemView.findViewById(R.id.image_home_temp);
+            imageView = (KenBurnsView) itemView.findViewById(R.id.image_home_temp);
             Picasso.with(context).load(pic).placeholder(R.drawable.defaultloader).networkPolicy(NetworkPolicy.OFFLINE).into(imageView, new Callback() {
                 @Override
                 public void onSuccess() {
@@ -191,6 +214,75 @@ public class HomeTemp extends AppCompatActivity {
             textView.setText(item);
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+
+        materialSearchView.setMenuItem(item);
+
+
+        final View notificaitons = menu.findItem(R.id.shop_cart).getActionView();
+
+        txtViewCount = (TextView) notificaitons.findViewById(R.id.txtCount);
+
+        FirebaseDatabase.getInstance().getReference().child("User Cart").child(auth.getCurrentUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String countAll = String.valueOf(dataSnapshot.getChildrenCount());
+                        if(dataSnapshot.getChildrenCount()<=0){
+                            txtViewCount.setVisibility(View.GONE);
+                        }else {
+                            txtViewCount.setVisibility(View.VISIBLE);
+                            txtViewCount.setText(countAll);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        notificaitons.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),CartDetail.class));
+            }
+        });
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.logout) {
+            FirebaseAuth.getInstance().signOut();
+            finish();
+            startActivity(new Intent(this, GettingStartedUser.class));
+        }
+        /*if (id == R.id.search) {
+            startActivity(new Intent(this, MapsActivity.class));
+        }*/
+
+
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if(menuItem.getItemId()==R.id.shop_cart){
+                    startActivity(new Intent(HomeTemp.this,CartDetail.class));
+                }
+                return false;
+            }
+        });
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

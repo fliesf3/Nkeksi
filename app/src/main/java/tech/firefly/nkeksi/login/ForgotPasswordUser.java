@@ -1,4 +1,4 @@
-package tech.firefly.nkeksi;
+package tech.firefly.nkeksi.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+
+import tech.firefly.nkeksi.R;
 
 
 public class ForgotPasswordUser extends AppCompatActivity {
